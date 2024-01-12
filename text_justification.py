@@ -8,12 +8,15 @@ def process_words(words, spaces, word_counter, maxWidth):
         string = ''
         for i in range(word_counter):
             if i != word_counter-1:
-                i_space = ' '*round(spaces/(word_counter-1-i))
-                spaces -= round(spaces/(word_counter-1-i))
+                spaces_need = (word_counter-1-i)
+                i_space = spaces // spaces_need
+                i_space = i_space + 1 if i_space < spaces / spaces_need else i_space
+                space_str = ' '*i_space
+                spaces -= i_space
             else:
-                i_space = ''
+                space_str = ''
 
-            string += f"{words[0]}{i_space}"
+            string += f"{words[0]}{space_str}"
             words.pop(0)
 
     return words, string
@@ -44,5 +47,7 @@ def text_justification(words, maxWidth):
 
     return array
 
+print(text_justification(words = ["The","important","thing","is","not","to","stop","questioning.","Curiosity","has","its","own","reason","for","existing."], maxWidth = 17))
+print(["The     important","thing  is  not to","stop questioning.","Curiosity has its","own  reason   for","existing.        "])
 print(text_justification(words = ["What","must","be","acknowledgment","shall","be"], maxWidth = 16))
 print(text_justification(words = ["This", "is", "an", "example", "of", "text", "justification."], maxWidth = 16))
