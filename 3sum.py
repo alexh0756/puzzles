@@ -23,43 +23,73 @@ def quicksort(array, low, high):
 
     return array
 
+def binary_search(nums, min_i, max_i, target):
+
+    i = (len(nums) - 1) // 2
+
+    while min_i <= max_i:
+
+        mid = min_i + (max_i - min_i) // 2
+
+        if nums[mid] == target:
+            return mid
+        
+        elif nums[mid] < target:
+            min_i = mid + 1
+
+        else:
+            max_i = mid - 1
+
+    return -1
+
 
 def three_sum(nums):
 
     i, j = 0, len(nums) - 1
+    mid = (j - i) // 2
     nums = quicksort(nums, 0, j)
     storage = []
 
-    while i < j:
+    search_space = []
+    for a in range(mid):
+        min_idx = -1
+        for b in range(mid+1, j+1):
+            if nums[a] + nums[b] + nums[b-1] > 0:
+                min_idx = b
+                break
+        
+        if min_idx != -1:
+            max_idx = min_idx
 
-        k = (j + i) // 2
-        previous = 'zzz'
-        while i < k < j:
-            print(nums[i],  nums[k],  nums[j])
+        if b != j:
+            for b in range(j, min_idx, - 1):
+                if nums[a] + nums[b] + nums[a+1] < 0:
+                    max_idx = b
+                    break
 
-            three_sum_total = nums[i] + nums[j] + nums[k]
-            if three_sum_total == 0:
-                sum_lst = quicksort([nums[i], nums[j], nums[k]], 0, 2)
+        if min_idx != -1:          
+            search_space.append((a, min_idx, max_idx))
+
+    for (i, j_min, j_max) in search_space:
+        for j in range(j_min, j_max + 1):
+
+            target = -nums[j]-nums[i]
+            print(f"min {i}:{nums[i]} - max {j}:{nums[j]} - target {target}")
+
+            idx = binary_search(nums, i + 1, j - 1, target)
+
+            if idx != -1:
+                sum_lst = quicksort([nums[i], nums[j], nums[idx]], 0, 2)
                 if sum_lst not in storage:
                     storage.append(sum_lst)
-                break
-            elif three_sum_total < 0:
-                k += 1
-                previous = previous[1:] + 'u'
-            elif three_sum_total > 0:
-                k -= 1
-                previous = previous[1:] + 'd'
-            if previous in ('udu', 'dud'):
-                break
 
-        if k == j:
-            i += 1
-        else:
-            j -= 1
+            else:
+                j -= 1
 
     return storage
 
 
+print(three_sum(nums = [-1,0,1,2,-1,-4,-2,-3,3,0,4]))
 print(three_sum(nums = [-1,0,1,2,-1,-4]))
 print(three_sum(nums = [0, 1, 1]))
 print(three_sum(nums = [0, 0, 0]))
