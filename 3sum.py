@@ -23,25 +23,42 @@ def quicksort(array, low, high):
 
     return array
 
-quicksort([10, 80, 30, 90, 40], 0, 4)
 
 def three_sum(nums):
 
-    n = len(nums)
-    nums = quicksort(nums, 0, n-1)
+    i, j = 0, len(nums) - 1
+    nums = quicksort(nums, 0, j)
     storage = []
 
-    for i in range(n):
-        for j in range(1, n):
-            if i < j:
-                for k in range(j + 1, n):
-                    if nums[i] + nums[j] + nums[k] == 0:
-                        sum_lst = quicksort([nums[i], nums[j], nums[k]], 0, 2)
-                        if sum_lst not in storage:
-                            storage.append(sum_lst)
+    while i < j:
 
+        k = (j + i) // 2
+        previous = 'zzz'
+        while i < k < j:
+            print(nums[i],  nums[k],  nums[j])
+
+            three_sum_total = nums[i] + nums[j] + nums[k]
+            if three_sum_total == 0:
+                sum_lst = quicksort([nums[i], nums[j], nums[k]], 0, 2)
+                if sum_lst not in storage:
+                    storage.append(sum_lst)
+                break
+            elif three_sum_total < 0:
+                k += 1
+                previous = previous[1:] + 'u'
+            elif three_sum_total > 0:
+                k -= 1
+                previous = previous[1:] + 'd'
+            if previous in ('udu', 'dud'):
+                break
+
+        if k == j:
+            i += 1
+        else:
+            j -= 1
 
     return storage
+
 
 print(three_sum(nums = [-1,0,1,2,-1,-4]))
 print(three_sum(nums = [0, 1, 1]))
