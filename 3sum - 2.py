@@ -13,6 +13,7 @@ def partition(array, low, high):
 
     return i + 1
 
+
 def quicksort(array, low, high):
 
     if low < high:
@@ -23,12 +24,12 @@ def quicksort(array, low, high):
 
     return array
 
+
 def binary_search(nums, min_i, max_i, target):
 
     i = (len(nums) - 1) // 2
 
     while min_i <= max_i:
-
         mid = min_i + (max_i - min_i) // 2
 
         if nums[mid] == target:
@@ -46,42 +47,27 @@ def three_sum(nums):
     i, j = 0, len(nums) - 1
     nums = quicksort(nums, 0, j)
     storage = []
+    
+    while i < j - 1:
 
-    search_space = []
-    for a in range(j - 2):
-        min_idx = -1
-        for b in range(a+1, j+1):
-            if nums[a] + nums[b] + nums[b-1] > 0:
-                min_idx = b
-                break
+        if nums[i] + nums[j-1] + nums[j] < 0:
+            i += 1
+            continue
+        if nums[i] + nums[i+1] + nums[j] > 0:
+            j -= 1
+            continue
+
+        idx = binary_search(nums, i + 1, j - 1, -nums[j]-nums[i])
         
-        if min_idx != -1:
-            max_idx = min_idx
+        if idx == -1:
+            i += 1
+            continue
+    
+        sum_lst = quicksort([nums[i], nums[j], nums[idx]], 0, 2)
+        if sum_lst not in storage:
+            storage.append(sum_lst)
+            i += 1
 
-        if b != j:
-            for b in range(j, min_idx, - 1):
-                if nums[a] + nums[b] + nums[a+1] < 0:
-                    max_idx = b
-                    break
-
-        if min_idx != -1:          
-            search_space.append((a, min_idx, max_idx))
-
-    for (i, j_min, j_max) in search_space:
-        for j in range(j_min, j_max + 1):
-
-            target = -nums[j]-nums[i]
-            print(f"min {i}:{nums[i]} - max {j}:{nums[j]} - target {target}")
-
-            idx = binary_search(nums, i + 1, j - 1, target)
-
-            if idx != -1:
-                sum_lst = quicksort([nums[i], nums[j], nums[idx]], 0, 2)
-                if sum_lst not in storage:
-                    storage.append(sum_lst)
-
-            else:
-                j -= 1
 
     return storage
 
