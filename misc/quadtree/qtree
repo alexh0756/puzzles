@@ -1,0 +1,29 @@
+class qtree():
+    def __init__(self, grid) -> None:
+        self.locs = []
+        self.grid = []
+        self.xstart = grid[0] 
+        self.xend = grid[1]
+        self.xspan = self.xend - self.xstart
+        self.ystart = grid[2]
+        self.yend = grid[3]
+        self.yspan = self.yend - self.ystart
+    
+    def add_point(self, point):
+        if len(self.locs) < 3:
+            self.locs.append(point)
+        else:
+            x_loc = (point[0] - self.xstart) // (self.xspan / 2)
+            y_loc = (point[0] - self.ystart) // (self.yspan / 2)
+
+        return True
+
+coords = [
+    [2, 5], [4, 6], [8, 5], [4, 0], [1, 1], 
+    [19, 19], [1, 18], [16, 16], [12, 3], [7, 11],
+    [14, 11], [9, 1], [1, 9], [10, 10], [1, 20], [20, 1]
+    ]
+
+tree = qtree([0, 20, 0, 20])
+for point in coords:
+    tree.add_point(point)
