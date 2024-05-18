@@ -10,7 +10,7 @@ class TreeNode:
 
 def build_tree(root, tree=None):
 
-    if not root:
+    if not root or root[0] == None:
         return None
 
     tree = TreeNode(val=root[0])
@@ -48,10 +48,20 @@ def extract_branch(root, side):
 
 class Solution:
     def removeLeafNodes(self, root, target):
-        print(root)
+        
+        if root.left:
+            root.left = self.removeLeafNodes(root.left, target)
+        if root.right:
+            root.right = self.removeLeafNodes(root.right, target)
+
+        if not root.left and not root.right and root.val == target:
+            root = None
+
+        return root
 
 solution = Solution()
 
 root = [1,2,3,2,None,2,4]
 tree = build_tree(root)
-solution.removeLeafNodes(tree, target=2)
+tree = solution.removeLeafNodes(tree, target=2)
+print
