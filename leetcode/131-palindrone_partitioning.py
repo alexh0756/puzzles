@@ -34,22 +34,45 @@
 
 
 def partition(s):
+    
+    def is_palindrome(s):
+        i, j = 0, len(s) - 1
 
-    lst = [[val] for val in range(1, len(s)-1)]
+        while i < j:
+            if s[i] != s[j]:
+                return False
+            i += 1
+            j -= 1
+        return True
 
-    for lists in lst:
-        lst1 = []
-        for i in range(1, len(s)-1):
-            if i in lists or i < lists[-1]:
+    splits = [[val] for val in range(1, len(s))]
+
+    for prev_lst in splits:
+        split_tmp = []
+        for i in range(max(1, prev_lst[-1]+1), len(s)):
+            if i in prev_lst or i < prev_lst[-1]:
                 continue
 
-            lst_tmp = [l for l in lists]
+            lst_tmp = [l for l in prev_lst]
             lst_tmp.append(i)
-            lst1.append(sorted(lst_tmp))
-        lst.extend(lst1)
-        if lst1 and len(lst1[0]) == len(s) - 2:
+            split_tmp.append(sorted(lst_tmp))
+        splits.extend(split_tmp)
+        if split_tmp and len(split_tmp[0]) == len(s) - 1:
             break
 
+    splits = [[]] + splits
+    lst = []
+
+    for split in splits:
+        split = [0] + split + [len(s)]
+        lst_tmp = []
+        for i in range(len(split)-1):
+            lst_tmp.append(s[split[i]:split[i+1]])
+    
+        lst_tmp_bool = list(map(is_palindrome, lst_tmp))
+        if len(lst_tmp_bool) == sum(lst_tmp_bool):
+            lst.append(lst_tmp)
+    
     return lst
 
 partition(s = "aabaac")
