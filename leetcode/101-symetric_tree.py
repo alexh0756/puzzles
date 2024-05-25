@@ -16,26 +16,6 @@ def build_tree(root, index):
 
     return tree
 
-# def isSymmetric(root):
-
-#     if root.left == root.right == None:
-#         return True
-
-#     vals = root.left.val == root.right.val
-#     exists_left = (root.left.left != None) == (root.right.right != None)
-#     exists_right = (root.left.right != None) == (root.right.left != None)
-
-#     vals_left = True
-#     if root.left.left and root.right.right:
-#         vals_left = root.left.left.val != root.right.right.val
-#     vals_right = True
-#     if root.left.right and root.right.left:
-#         vals_right = root.left.right.val != root.right.left.val if exists_left else True
-
-#     outcome = vals and exists_left and exists_right and vals_left and vals_right and isSymmetric(root.left) and isSymmetric(root.right)
-
-#     return outcome
-
 
 def isSymmetric(root):
 
