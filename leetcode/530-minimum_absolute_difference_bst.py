@@ -50,7 +50,7 @@ def getMinimumDifference(root):
         if not root:
             return prev, 10**6
         if not root.left and not root.right:
-            if prev:
+            if prev != None:
                 min_cur = root.val - prev
             else:
                 min_cur = 10**6
